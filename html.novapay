@@ -1,0 +1,2294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NovaPay Digital Wallet</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f4f8;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background: #0a0e17;
+            color: #e8edf5;
+        }
+        body.dark-mode .glass {
+            background: rgba(255, 255, 255, 0.05) !important;
+            backdrop-filter: blur(16px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        }
+        body.dark-mode .card-bg {
+            background: rgba(255, 255, 255, 0.04) !important;
+        }
+        body.dark-mode .text-primary {
+            color: #e8edf5 !important;
+        }
+        body.dark-mode .text-secondary {
+            color: #94a3b8 !important;
+        }
+        body.dark-mode .border-light {
+            border-color: rgba(255, 255, 255, 0.06) !important;
+        }
+        body.dark-mode .sidebar {
+            background: rgba(10, 14, 23, 0.92) !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
+        }
+        body.dark-mode .topbar {
+            background: rgba(10, 14, 23, 0.85) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+        }
+        body.dark-mode .input-dark {
+            background: rgba(255, 255, 255, 0.06) !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+            color: #e8edf5 !important;
+        }
+        body.dark-mode .input-dark:focus {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+        }
+        body.dark-mode .table-dark {
+            background: rgba(255, 255, 255, 0.03) !important;
+        }
+        body.dark-mode .table-dark td,
+        body.dark-mode .table-dark th {
+            border-color: rgba(255, 255, 255, 0.06) !important;
+            color: #e8edf5 !important;
+        }
+        body.dark-mode .hover-dark:hover {
+            background: rgba(255, 255, 255, 0.06) !important;
+        }
+        body.dark-mode .modal-overlay {
+            background: rgba(0, 0, 0, 0.7) !important;
+        }
+        body.dark-mode .modal-content {
+            background: #141a26 !important;
+            border: 1px solid rgba(255, 255, 255, 0.06) !important;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+
+        .glass-dark {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+        }
+
+        .card-gradient {
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            border-radius: 20px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+        }
+        body.dark-mode .card-gradient {
+            background: rgba(255, 255, 255, 0.04);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+        }
+        body.dark-mode .card-gradient:hover {
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+        }
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #1e293b;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            cursor: pointer;
+        }
+        body.dark-mode .btn-secondary {
+            color: #e8edf5;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .btn-secondary:hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
+        body.dark-mode .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        body.dark-mode ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+        body.dark-mode ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        .sidebar {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .sidebar-item {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border-radius: 12px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #64748b;
+        }
+        .sidebar-item:hover {
+            background: rgba(37, 99, 235, 0.08);
+            color: #1e293b;
+        }
+        .sidebar-item.active {
+            background: rgba(37, 99, 235, 0.12);
+            color: #2563eb;
+            font-weight: 600;
+        }
+        body.dark-mode .sidebar-item {
+            color: #94a3b8;
+        }
+        body.dark-mode .sidebar-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: #e8edf5;
+        }
+        body.dark-mode .sidebar-item.active {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-up {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        @keyframes pulse-glow {
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(37, 99, 235, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(37, 99, 235, 0.4);
+            }
+        }
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        /* QR Code */
+        .qr-container {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            display: inline-block;
+        }
+        body.dark-mode .qr-container {
+            background: #1e293b;
+        }
+
+        /* Charts placeholder */
+        .chart-bar {
+            transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                width: 280px;
+                z-index: 50;
+                transform: translateX(-100%);
+                background: white;
+                padding: 20px;
+                overflow-y: auto;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.4);
+                z-index: 40;
+            }
+            .sidebar-overlay.open {
+                display: block;
+            }
+            body.dark-mode .sidebar {
+                background: #0a0e17;
+            }
+        }
+
+        /* 2FA Input */
+        .otp-input {
+            width: 48px;
+            height: 56px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            transition: all 0.2s;
+        }
+        .otp-input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+            outline: none;
+        }
+        body.dark-mode .otp-input {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #e8edf5;
+        }
+        body.dark-mode .otp-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Toggle Switch */
+        .toggle {
+            width: 48px;
+            height: 26px;
+            background: #cbd5e1;
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .toggle.active {
+            background: #2563eb;
+        }
+        .toggle .thumb {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .toggle.active .thumb {
+            transform: translateX(22px);
+        }
+        body.dark-mode .toggle {
+            background: #334155;
+        }
+        body.dark-mode .toggle.active {
+            background: #3b82f6;
+        }
+
+        /* Status badges */
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .badge-danger {
+            background: #fecaca;
+            color: #991b1b;
+        }
+        .badge-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        body.dark-mode .badge-success {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+        body.dark-mode .badge-warning {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+        body.dark-mode .badge-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+        body.dark-mode .badge-info {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        /* Notification dot */
+        .notif-dot {
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+        }
+
+        /* Spinner */
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Mobile bottom nav */
+        .bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            padding: 8px 0;
+            z-index: 30;
+        }
+        .bottom-nav .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 10px;
+            color: #94a3b8;
+            transition: color 0.2s;
+            cursor: pointer;
+            padding: 4px 0;
+        }
+        .bottom-nav .nav-item.active {
+            color: #2563eb;
+        }
+        .bottom-nav .nav-item i {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+        body.dark-mode .bottom-nav {
+            background: rgba(10, 14, 23, 0.9);
+            border-top-color: rgba(255, 255, 255, 0.06);
+        }
+        body.dark-mode .bottom-nav .nav-item {
+            color: #64748b;
+        }
+        body.dark-mode .bottom-nav .nav-item.active {
+            color: #60a5fa;
+        }
+
+        @media (max-width: 768px) {
+            .bottom-nav {
+                display: flex;
+                justify-content: space-around;
+            }
+            .main-content {
+                padding-bottom: 80px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- React & Libraries from CDN -->
+    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js">
+    </script>
+    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js">
+    </script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/2.30.0/date_fns.min.js">
+    </script>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useCallback, useMemo, createContext, useContext, useReducer } = React;
+
+        // ============================================================
+        // CONTEXT
+        // ============================================================
+        const AppContext = createContext(null);
+
+        const initialState = {
+            user: null,
+            isAuthenticated: false,
+            is2FAVerified: false,
+            darkMode: false,
+            sidebarOpen: false,
+            currentPage: 'dashboard',
+            notifications: [],
+            walletBalance: 12483.75,
+            transactions: [],
+            userProfile: {
+                name: 'John Anderson',
+                email: 'john@novapay.com',
+                avatar: 'https://i.pravatar.cc/150?img=12',
+                kycStatus: 'verified',
+                phone: '+1 (555) 123-4567',
+                joined: '2024-06-15'
+            },
+            cards: [
+                { id: 1, type: 'Visa', last4: '4242', expiry: '12/26', brand: 'visa' },
+                { id: 2, type: 'Mastercard', last4: '8888', expiry: '08/25', brand: 'mastercard' }
+            ],
+            bankAccounts: [
+                { id: 1, bank: 'Chase Bank', accountNumber: '****4567', routing: '021000021' }
+            ],
+            pendingDeposits: [
+                { id: 1, amount: 500, status: 'pending', date: '2026-07-28', method: 'Bank Transfer' },
+                { id: 2, amount: 1200, status: 'approved', date: '2026-07-25', method: 'Wire' }
+            ],
+            pendingWithdrawals: [
+                { id: 1, amount: 200, status: 'pending', date: '2026-07-27', method: 'Bank Transfer' },
+                { id: 2, amount: 75, status: 'completed', date: '2026-07-24', method: 'PayPal' }
+            ],
+            billPayments: [
+                { id: 1, provider: 'Electricity', amount: 145.50, date: '2026-07-20', status: 'paid' },
+                { id: 2, provider: 'Internet', amount: 89.99, date: '2026-07-18', status: 'pending' }
+            ],
+            mobileLoads: [
+                { id: 1, number: '+1 (555) 123-4567', amount: 25, date: '2026-07-26', status: 'completed' }
+            ],
+            // Admin
+            users: [
+                { id: 1, name: 'Alice Smith', email: 'alice@example.com', role: 'user', kyc: 'verified', status: 'active',
+                    joined: '2026-01-10' },
+                { id: 2, name: 'Bob Johnson', email: 'bob@example.com', role: 'user', kyc: 'pending', status: 'active',
+                    joined: '2026-02-15' },
+                { id: 3, name: 'Carol White', email: 'carol@example.com', role: 'admin', kyc: 'verified', status: 'active',
+                    joined: '2025-11-20' }
+            ],
+            kycRequests: [
+                { id: 1, name: 'Bob Johnson', email: 'bob@example.com', submitted: '2026-07-25', status: 'pending' },
+                { id: 2, name: 'Diana Prince', email: 'diana@example.com', submitted: '2026-07-26', status: 'pending' }
+            ],
+            systemLogs: [
+                { id: 1, action: 'User login', user: 'john@novapay.com', timestamp: '2026-07-29 09:23:45', ip: '192.168.1.1' },
+                { id: 2, action: 'Withdrawal request', user: 'alice@example.com', timestamp: '2026-07-29 08:15:22',
+                ip: '192.168.1.2' },
+                { id: 3, action: 'KYC approved', user: 'bob@example.com', timestamp: '2026-07-28 14:30:10',
+                ip: '192.168.1.3' }
+            ],
+            supportTickets: [
+                { id: 1, user: 'alice@example.com', subject: 'Transaction failed', status: 'open', created: '2026-07-28' },
+                { id: 2, user: 'bob@example.com', subject: 'KYC document issue', status: 'in-progress',
+                created: '2026-07-27' }
+            ]
+        };
+
+        function appReducer(state, action) {
+            switch (action.type) {
+                case 'SET_USER':
+                    return { ...state, user: action.payload, isAuthenticated: !!action.payload };
+                case 'SET_2FA':
+                    return { ...state, is2FAVerified: action.payload };
+                case 'TOGGLE_DARK_MODE':
+                    return { ...state, darkMode: !state.darkMode };
+                case 'TOGGLE_SIDEBAR':
+                    return { ...state, sidebarOpen: !state.sidebarOpen };
+                case 'SET_PAGE':
+                    return { ...state, currentPage: action.payload };
+                case 'ADD_TRANSACTION':
+                    return { ...state, transactions: [action.payload, ...state.transactions] };
+                case 'UPDATE_BALANCE':
+                    return { ...state, walletBalance: action.payload };
+                case 'ADD_NOTIFICATION':
+                    return { ...state, notifications: [action.payload, ...state.notifications] };
+                case 'UPDATE_PROFILE':
+                    return { ...state, userProfile: { ...state.userProfile, ...action.payload } };
+                default:
+                    return state;
+            }
+        }
+
+        // ============================================================
+        // MAIN APP
+        // ============================================================
+        function App() {
+            const [state, dispatch] = useReducer(appReducer, initialState);
+            const [isLoading, setIsLoading] = useState(false);
+            const [show2FA, setShow2FA] = useState(false);
+            const [otpValue, setOtpValue] = useState('');
+            const [authView, setAuthView] = useState('login'); // 'login' | 'signup' | '2fa'
+            const [authEmail, setAuthEmail] = useState('');
+            const [authPassword, setAuthPassword] = useState('');
+            const [authName, setAuthName] = useState('');
+            const [authError, setAuthError] = useState('');
+
+            // Dark mode effect
+            useEffect(() => {
+                if (state.darkMode) {
+                    document.body.classList.add('dark-mode');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                }
+            }, [state.darkMode]);
+
+            // Simulate 2FA verification
+            const handle2FAVerify = () => {
+                if (otpValue.length === 6) {
+                    dispatch({ type: 'SET_2FA', payload: true });
+                    setShow2FA(false);
+                    setAuthView('login');
+                    dispatch({ type: 'SET_USER', payload: { email: authEmail, name: authName || 'User' } });
+                    addNotification('Welcome to NovaPay! Your account is secure with 2FA.', 'success');
+                } else {
+                    setAuthError('Please enter a valid 6-digit code.');
+                }
+            };
+
+            const handleLogin = (e) => {
+                e.preventDefault();
+                setAuthError('');
+                if (!authEmail || !authPassword) {
+                    setAuthError('Please fill in all fields.');
+                    return;
+                }
+                // Simulate login
+                setIsLoading(true);
+                setTimeout(() => {
+                    setIsLoading(false);
+                    setShow2FA(true);
+                    setAuthView('2fa');
+                    // In real app, user would be logged in, then 2FA would be triggered
+                }, 800);
+            };
+
+            const handleSignup = (e) => {
+                e.preventDefault();
+                setAuthError('');
+                if (!authName || !authEmail || !authPassword) {
+                    setAuthError('Please fill in all fields.');
+                    return;
+                }
+                setIsLoading(true);
+                setTimeout(() => {
+                    setIsLoading(false);
+                    // Auto-login after signup
+                    dispatch({ type: 'SET_USER', payload: { email: authEmail, name: authName } });
+                    dispatch({ type: 'SET_2FA', payload: true });
+                    setAuthView('login');
+                    addNotification('Account created successfully! Welcome to NovaPay.', 'success');
+                }, 800);
+            };
+
+            const handleLogout = () => {
+                dispatch({ type: 'SET_USER', payload: null });
+                dispatch({ type: 'SET_2FA', payload: false });
+                setAuthView('login');
+                setAuthEmail('');
+                setAuthPassword('');
+                setAuthName('');
+                setOtpValue('');
+                addNotification('You have been logged out.', 'info');
+            };
+
+            const addNotification = (message, type = 'info') => {
+                const notif = {
+                    id: Date.now(),
+                    message,
+                    type,
+                    read: false,
+                    timestamp: new Date().toISOString()
+                };
+                dispatch({ type: 'ADD_NOTIFICATION', payload: notif });
+            };
+
+            const updateBalance = (amount, type) => {
+                const current = state.walletBalance;
+                const newBalance = type === 'add' ? current + amount : current - amount;
+                dispatch({ type: 'UPDATE_BALANCE', payload: newBalance });
+                // Add transaction
+                const tx = {
+                    id: Date.now(),
+                    type: type === 'add' ? 'deposit' : 'withdrawal',
+                    amount,
+                    status: 'completed',
+                    date: new Date().toISOString(),
+                    description: type === 'add' ? 'Deposit' : 'Withdrawal'
+                };
+                dispatch({ type: 'ADD_TRANSACTION', payload: tx });
+            };
+
+            // Render auth screen
+            if (!state.isAuthenticated || !state.is2FAVerified) {
+                return (
+                    <AuthScreen
+                        view={authView}
+                        setView={setAuthView}
+                        email={authEmail}
+                        setEmail={setAuthEmail}
+                        password={authPassword}
+                        setPassword={setAuthPassword}
+                        name={authName}
+                        setName={setAuthName}
+                        error={authError}
+                        isLoading={isLoading}
+                        onLogin={handleLogin}
+                        onSignup={handleSignup}
+                        on2FAVerify={handle2FAVerify}
+                        otpValue={otpValue}
+                        setOtpValue={setOtpValue}
+                        darkMode={state.darkMode}
+                        toggleDarkMode={() => dispatch({ type: 'TOGGLE_DARK_MODE' })}
+                    />
+                );
+            }
+
+            // Main app
+            return (
+                <AppContext.Provider value={{ state, dispatch, addNotification, updateBalance, handleLogout }}>
+                    <MainApp />
+                </AppContext.Provider>
+            );
+        }
+
+        // ============================================================
+        // AUTH SCREEN
+        // ============================================================
+        function AuthScreen({
+            view,
+            setView,
+            email,
+            setEmail,
+            password,
+            setPassword,
+            name,
+            setName,
+            error,
+            isLoading,
+            onLogin,
+            onSignup,
+            on2FAVerify,
+            otpValue,
+            setOtpValue,
+            darkMode,
+            toggleDarkMode
+        }) {
+            return (
+                <div className="min-h-screen flex items-center justify-center p-4 relative" style={{
+                        background: darkMode ?
+                            'linear-gradient(145deg, #0a0e17, #141a26)' :
+                            'linear-gradient(145deg, #f0f4f8, #e2e8f0)'
+                    }}>
+                    {/* Dark mode toggle on auth */}
+                    <button
+                        onClick={toggleDarkMode}
+                        className="absolute top-6 right-6 text-2xl text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition"
+                    >
+                        <i className={`fas ${darkMode ? 'fa-sun' : 'fa-moon'}`}></i>
+                    </button>
+
+                    <div className="w-full max-w-md">
+                        {/* Logo */}
+                        <div className="text-center mb-8">
+                            <div className="inline-flex items-center gap-3 mb-2">
+                                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                                    <i className="fas fa-wallet text-white text-2xl"></i>
+                                </div>
+                                <span className="text-3xl font-extrabold tracking-tight" style={{ color: darkMode ?
+                                        '#e8edf5' : '#0f172a' }}>
+                                    NovaPay
+                                </span>
+                            </div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Digital Wallet • Secure • Fast</p>
+                        </div>
+
+                        {/* Card */}
+                        <div className="glass p-8 rounded-3xl shadow-2xl">
+                            {view === '2fa' ? (
+                                // 2FA Screen
+                                <div className="animate-fade-up">
+                                    <div className="text-center mb-6">
+                                        <div className="w-20 h-20 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center mx-auto mb-4">
+                                            <i className="fas fa-shield-alt text-blue-600 dark:text-blue-400 text-3xl"></i>
+                                        </div>
+                                        <h2 className="text-2xl font-bold dark:text-white">Two-Factor Authentication</h2>
+                                        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
+                                            Enter the 6-digit code sent to your email
+                                        </p>
+                                    </div>
+                                    <div className="flex justify-center gap-2 mb-6">
+                                        {[...Array(6)].map((_, i) => (
+                                            <input
+                                                key={i}
+                                                type="text"
+                                                maxLength="1"
+                                                className="otp-input w-12 h-14 text-center text-2xl font-bold dark:text-white"
+                                                value={otpValue[i] || ''}
+                                                onChange={(e) => {
+                                                    const val = e.target.value.replace(/\D/g, '');
+                                                    if (val.length <= 1) {
+                                                        const newOtp = otpValue.split('');
+                                                        newOtp[i] = val;
+                                                        setOtpValue(newOtp.join(''));
+                                                        // Auto-advance
+                                                        if (val && i < 5) {
+                                                            document.querySelectorAll('.otp-input')[i + 1]?.focus();
+                                                        }
+                                                    }
+                                                }}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Backspace' && i > 0 && !otpValue[i]) {
+                                                        document.querySelectorAll('.otp-input')[i - 1]?.focus();
+                                                    }
+                                                }}
+                                                autoFocus={i === 0}
+                                            />
+                                        ))}
+                                    </div>
+                                    {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
+                                    <button
+                                        onClick={on2FAVerify}
+                                        className="btn-primary w-full text-center flex items-center justify-center gap-2"
+                                    >
+                                        <i className="fas fa-check-circle"></i> Verify
+                                    </button>
+                                    <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
+                                        Didn't receive code? <a href="#" className="text-blue-600 dark:text-blue-400 font-medium">Resend</a>
+                                    </p>
+                                </div>
+                            ) : view === 'login' ? (
+                                // Login
+                                <form onSubmit={onLogin} className="animate-fade-up">
+                                    <h2 className="text-2xl font-bold dark:text-white mb-1">Welcome Back</h2>
+                                    <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">Sign in to your NovaPay wallet</p>
+                                    <div className="space-y-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                                            <input
+                                                type="email"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                                                placeholder="you@example.com"
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                                            <input
+                                                type="password"
+                                                value={password}
+                                                onChange={(e) => setPassword(e.target.value)}
+                                                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                                                placeholder="••••••••"
+                                                required
+                                            />
+                                        </div>
+                                        {error && <p className="text-red-500 text-sm">{error}</p>}
+                                        <button
+                                            type="submit"
+                                            disabled={isLoading}
+                                            className="btn-primary w-full text-center flex items-center justify-center gap-2 disabled:opacity-70"
+                                        >
+                                            {isLoading ? <div className="spinner"></div> : <><i className="fas fa-sign-in-alt"></i> Sign In</>}
+                                        </button>
+                                        <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+                                            Don't have an account?{' '}
+                                            <a href="#" onClick={(e) => { e.preventDefault();
+                                                    setView('signup');
+                                                    setError(''); }} className="text-blue-600 dark:text-blue-400 font-medium">
+                                                Sign Up
+                                            </a>
+                                        </p>
+                                    </div>
+                                </form>
+                            ) : (
+                                // Signup
+                                <form onSubmit={onSignup} className="animate-fade-up">
+                                    <h2 className="text-2xl font-bold dark:text-white mb-1">Create Account</h2>
+                                    <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">Join NovaPay today</p>
+                                    <div className="space-y-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                                            <input
+                                                type="text"
+                                                value={name}
+                                                onChange={(e) => setName(e.target.value)}
+                                                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                                                placeholder="John Doe"
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                                            <input
+                                                type="email"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                                                placeholder="you@example.com"
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                                            <input
+                                                type="password"
+                                                value={password}
+                                                onChange={(e) => setPassword(e.target.value)}
+                                                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                                                placeholder="••••••••"
+                                                required
+                                            />
+                                        </div>
+                                        {error && <p className="text-red-500 text-sm">{error}</p>}
+                                        <button
+                                            type="submit"
+                                            disabled={isLoading}
+                                            className="btn-primary w-full text-center flex items-center justify-center gap-2 disabled:opacity-70"
+                                        >
+                                            {isLoading ? <div className="spinner"></div> : <><i className="fas fa-user-plus"></i> Create Account</>}
+                                        </button>
+                                        <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+                                            Already have an account?{' '}
+                                            <a href="#" onClick={(e) => { e.preventDefault();
+                                                    setView('login');
+                                                    setError(''); }} className="text-blue-600 dark:text-blue-400 font-medium">
+                                                Sign In
+                                            </a>
+                                        </p>
+                                    </div>
+                                </form>
+                            )}
+                        </div>
+
+                        <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-6">
+                            <i className="fas fa-lock mr-1"></i> End-to-end encrypted • Secure • PCI DSS compliant
+                        </p>
+                    </div>
+                </div>
+            );
+        }
+
+        // ============================================================
+        // MAIN APP LAYOUT
+        // ============================================================
+        function MainApp() {
+            const { state, dispatch, handleLogout } = useContext(AppContext);
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            const [showNotificationPanel, setShowNotificationPanel] = useState(false);
+            const [activeTab, setActiveTab] = useState('dashboard');
+
+            const toggleSidebar = () => {
+                if (window.innerWidth <= 768) {
+                    setMobileMenuOpen(!mobileMenuOpen);
+                }
+                dispatch({ type: 'TOGGLE_SIDEBAR' });
+            };
+
+            const navigateTo = (page) => {
+                dispatch({ type: 'SET_PAGE', payload: page });
+                setActiveTab(page);
+                if (window.innerWidth <= 768) {
+                    setMobileMenuOpen(false);
+                }
+            };
+
+            // Close mobile menu on resize
+            useEffect(() => {
+                const handleResize = () => {
+                    if (window.innerWidth > 768) {
+                        setMobileMenuOpen(false);
+                    }
+                };
+                window.addEventListener('resize', handleResize);
+                return () => window.removeEventListener('resize', handleResize);
+            }, []);
+
+            const unreadCount = state.notifications.filter(n => !n.read).length;
+
+            return (
+                <div className="flex h-screen overflow-hidden relative">
+                    {/* Sidebar Overlay (mobile) */}
+                    <div
+                        className={`sidebar-overlay ${mobileMenuOpen ? 'open' : ''}`}
+                        onClick={() => setMobileMenuOpen(false)}
+                    ></div>
+
+                    {/* Sidebar */}
+                    <aside className={`sidebar ${mobileMenuOpen ? 'open' : ''} w-64 shrink-0 flex flex-col border-r border-gray-200/50 dark:border-gray-800/50 bg-white/80 dark:bg-gray-900/90 backdrop-blur-xl`}>
+                        {/* Logo */}
+                        <div className="flex items-center gap-3 px-4 py-6 border-b border-gray-100 dark:border-gray-800/50">
+                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center shadow-md shadow-blue-500/25">
+                                <i className="fas fa-wallet text-white text-lg"></i>
+                            </div>
+                            <span className="text-xl font-extrabold tracking-tight dark:text-white">NovaPay</span>
+                            <span className="ml-auto text-[10px] font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-full">v2.0</span>
+                        </div>
+
+                        {/* Navigation */}
+                        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+                            {[
+                                { id: 'dashboard', icon: 'fa-home', label: 'Dashboard' },
+                                { id: 'wallet', icon: 'fa-wallet', label: 'Wallet' },
+                                { id: 'transactions', icon: 'fa-exchange-alt', label: 'Transactions' },
+                                { id: 'send', icon: 'fa-paper-plane', label: 'Send Money' },
+                                { id: 'receive', icon: 'fa-qrcode', label: 'Receive' },
+                                { id: 'bills', icon: 'fa-file-invoice', label: 'Bill Payments' },
+                                { id: 'cards', icon: 'fa-credit-card', label: 'Cards' },
+                                { id: 'profile', icon: 'fa-user', label: 'Profile' },
+                            ].map(item => (
+                                <div
+                                    key={item.id}
+                                    onClick={() => navigateTo(item.id)}
+                                    className={`sidebar-item ${state.currentPage === item.id ? 'active' : ''}`}
+                                >
+                                    <i className={`fas ${item.icon} w-5 text-center`}></i>
+                                    <span className="text-sm font-medium">{item.label}</span>
+                                    {item.id === 'dashboard' && unreadCount > 0 && (
+                                        <span className="ml-auto bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                            {unreadCount}
+                                        </span>
+                                    )}
+                                </div>
+                            ))}
+
+                            <div className="h-px bg-gray-200/50 dark:bg-gray-700/50 my-3"></div>
+
+                            {[
+                                { id: 'admin', icon: 'fa-user-shield', label: 'Admin Dashboard', admin: true },
+                                { id: 'settings', icon: 'fa-cog', label: 'Settings' },
+                            ].map(item => (
+                                <div
+                                    key={item.id}
+                                    onClick={() => navigateTo(item.id)}
+                                    className={`sidebar-item ${state.currentPage === item.id ? 'active' : ''}`}
+                                >
+                                    <i className={`fas ${item.icon} w-5 text-center`}></i>
+                                    <span className="text-sm font-medium">{item.label}</span>
+                                </div>
+                            ))}
+
+                            <div className="h-px bg-gray-200/50 dark:bg-gray-700/50 my-3"></div>
+
+                            <div onClick={handleLogout} className="sidebar-item text-red-500 hover:bg-red-50/50 dark:hover:bg-red-900/20">
+                                <i className="fas fa-sign-out-alt w-5 text-center"></i>
+                                <span className="text-sm font-medium">Logout</span>
+                            </div>
+                        </nav>
+
+                        {/* User card */}
+                        <div className="border-t border-gray-100 dark:border-gray-800/50 p-4">
+                            <div className="flex items-center gap-3">
+                                <img
+                                    src={state.userProfile.avatar}
+                                    alt="Avatar"
+                                    className="w-10 h-10 rounded-full object-cover ring-2 ring-blue-500/20"
+                                />
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-semibold dark:text-white truncate">{state.userProfile.name}</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{state.userProfile.email}</p>
+                                </div>
+                                <div className={`badge ${state.userProfile.kycStatus === 'verified' ? 'badge-success' : 'badge-warning'}`}>
+                                    {state.userProfile.kycStatus}
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+
+                    {/* Main Content */}
+                    <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+                        {/* Top Bar */}
+                        <header className="topbar bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50 px-4 md:px-6 py-3 flex items-center justify-between shrink-0">
+                            <div className="flex items-center gap-3">
+                                <button
+                                    onClick={toggleSidebar}
+                                    className="md:hidden text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white text-xl"
+                                >
+                                    <i className="fas fa-bars"></i>
+                                </button>
+                                <h1 className="text-lg font-semibold dark:text-white capitalize">
+                                    {state.currentPage === 'dashboard' && 'Dashboard'}
+                                    {state.currentPage === 'wallet' && 'Wallet'}
+                                    {state.currentPage === 'transactions' && 'Transactions'}
+                                    {state.currentPage === 'send' && 'Send Money'}
+                                    {state.currentPage === 'receive' && 'Receive Money'}
+                                    {state.currentPage === 'bills' && 'Bill Payments'}
+                                    {state.currentPage === 'cards' && 'Card Management'}
+                                    {state.currentPage === 'profile' && 'Profile & KYC'}
+                                    {state.currentPage === 'admin' && 'Admin Dashboard'}
+                                    {state.currentPage === 'settings' && 'Settings'}
+                                </h1>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                {/* Dark mode toggle */}
+                                <button
+                                    onClick={() => dispatch({ type: 'TOGGLE_DARK_MODE' })}
+                                    className="w-9 h-9 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                                >
+                                    <i className={`fas ${state.darkMode ? 'fa-sun' : 'fa-moon'}`}></i>
+                                </button>
+                                {/* Notifications */}
+                                <button
+                                    onClick={() => setShowNotificationPanel(!showNotificationPanel)}
+                                    className="w-9 h-9 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition relative"
+                                >
+                                    <i className="fas fa-bell"></i>
+                                    {unreadCount > 0 && (
+                                        <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                                            {unreadCount}
+                                        </span>
+                                    )}
+                                </button>
+                                {/* Avatar */}
+                                <img
+                                    src={state.userProfile.avatar}
+                                    alt="Avatar"
+                                    className="w-9 h-9 rounded-full object-cover ring-2 ring-blue-500/20 cursor-pointer"
+                                    onClick={() => navigateTo('profile')}
+                                />
+                            </div>
+                        </header>
+
+                        {/* Notification Panel */}
+                        {showNotificationPanel && (
+                            <div className="absolute top-16 right-4 w-80 max-h-[70vh] overflow-y-auto glass rounded-2xl shadow-2xl z-40 p-4 animate-fade-up">
+                                <div className="flex items-center justify-between mb-3">
+                                    <h3 className="font-semibold dark:text-white">Notifications</h3>
+                                    <button className="text-sm text-blue-600 dark:text-blue-400 font-medium">Mark all read</button>
+                                </div>
+                                {state.notifications.length === 0 ? (
+                                    <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-6">No notifications</p>
+                                ) : (
+                                    state.notifications.map(n => (
+                                        <div key={n.id} className={`p-3 rounded-xl mb-2 ${n.read ? 'bg-transparent' : 'bg-blue-50/50 dark:bg-blue-900/20'}`}>
+                                            <p className="text-sm dark:text-white">{n.message}</p>
+                                            <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1">
+                                                {dateFns.formatDistanceToNow(new Date(n.timestamp), { addSuffix: true })}
+                                            </p>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        )}
+
+                        {/* Page Content */}
+                        <main className="flex-1 overflow-y-auto p-4 md:p-6 main-content">
+                            {state.currentPage === 'dashboard' && <DashboardPage />}
+                            {state.currentPage === 'wallet' && <WalletPage />}
+                            {state.currentPage === 'transactions' && <TransactionsPage />}
+                            {state.currentPage === 'send' && <SendMoneyPage />}
+                            {state.currentPage === 'receive' && <ReceivePage />}
+                            {state.currentPage === 'bills' && <BillsPage />}
+                            {state.currentPage === 'cards' && <CardsPage />}
+                            {state.currentPage === 'profile' && <ProfilePage />}
+                            {state.currentPage === 'admin' && <AdminPage />}
+                            {state.currentPage === 'settings' && <SettingsPage />}
+                        </main>
+
+                        {/* Bottom Navigation (Mobile) */}
+                        <div className="bottom-nav">
+                            {[
+                                { id: 'dashboard', icon: 'fa-home', label: 'Home' },
+                                { id: 'wallet', icon: 'fa-wallet', label: 'Wallet' },
+                                { id: 'send', icon: 'fa-paper-plane', label: 'Send' },
+                                { id: 'receive', icon: 'fa-qrcode', label: 'Receive' },
+                                { id: 'profile', icon: 'fa-user', label: 'Profile' },
+                            ].map(item => (
+                                <div
+                                    key={item.id}
+                                    onClick={() => navigateTo(item.id)}
+                                    className={`nav-item ${state.currentPage === item.id ? 'active' : ''}`}
+                                >
+                                    <i className={`fas ${item.icon}`}></i>
+                                    <span>{item.label}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // ============================================================
+        // DASHBOARD PAGE
+        // ============================================================
+        function DashboardPage() {
+            const { state } = useContext(AppContext);
+            const [showQuickTransfer, setShowQuickTransfer] = useState(false);
+
+            const recentTxs = state.transactions.slice(0, 5);
+
+            // Stats
+            const totalIncome = state.transactions.filter(t => t.type === 'deposit').reduce((s, t) => s + t.amount, 0);
+            const totalExpense = state.transactions.filter(t => t.type === 'withdrawal').reduce((s, t) => s + t.amount, 0);
+
+            // Spending categories (mock)
+            const categories = [
+                { name: 'Shopping', amount: 420, color: '#3b82f6' },
+                { name: 'Food', amount: 280, color: '#8b5cf6' },
+                { name: 'Transport', amount: 150, color: '#06b6d4' },
+                { name: 'Bills', amount: 320, color: '#f59e0b' },
+                { name: 'Entertainment', amount: 180, color: '#ef4444' },
+            ];
+            const maxCategory = Math.max(...categories.map(c => c.amount));
+
+            return (
+                <div className="space-y-6 animate-fade-up">
+                    {/* Quick stats row */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="glass p-5 rounded-2xl">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Total Balance</p>
+                            <p className="text-2xl font-bold dark:text-white mt-1">${state.walletBalance.toFixed(2)}</p>
+                            <p className="text-xs text-green-600 dark:text-green-400 mt-1"><i className="fas fa-arrow-up mr-1"></i> +2.4% this month</p>
+                        </div>
+                        <div className="glass p-5 rounded-2xl">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Income</p>
+                            <p className="text-2xl font-bold text-green-600 dark:text-green-400 mt-1">${totalIncome.toFixed(2)}</p>
+                            <p className="text-xs text-gray-400 mt-1">This month</p>
+                        </div>
+                        <div className="glass p-5 rounded-2xl">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Expenses</p>
+                            <p className="text-2xl font-bold text-red-500 dark:text-red-400 mt-1">${totalExpense.toFixed(2)}</p>
+                            <p className="text-xs text-gray-400 mt-1">This month</p>
+                        </div>
+                        <div className="glass p-5 rounded-2xl">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Pending</p>
+                            <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400 mt-1">
+                                ${state.pendingDeposits.filter(d => d.status === 'pending').reduce((s, d) => s + d.amount, 0).toFixed(2)}
+                            </p>
+                            <p className="text-xs text-gray-400 mt-1">{state.pendingDeposits.filter(d => d.status === 'pending').length} pending requests</p>
+                        </div>
+                    </div>
+
+                    {/* Main widgets */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        {/* Recent Transactions */}
+                        <div className="lg:col-span-2 glass p-6 rounded-2xl">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="font-semibold dark:text-white">Recent Transactions</h3>
+                                <button className="text-sm text-blue-600 dark:text-blue-400 font-medium">View All</button>
+                            </div>
+                            {recentTxs.length === 0 ? (
+                                <p className="text-gray-500 dark:text-gray-400 text-center py-8">No transactions yet</p>
+                            ) : (
+                                <div className="space-y-3">
+                                    {recentTxs.map(tx => (
+                                        <div key={tx.id} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50/50 dark:hover:bg-white/5 transition">
+                                            <div className="flex items-center gap-3">
+                                                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${tx.type === 'deposit' ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30'}`}>
+                                                    <i className={`fas ${tx.type === 'deposit' ? 'fa-arrow-down text-green-600 dark:text-green-400' : 'fa-arrow-up text-red-500 dark:text-red-400'}`}></i>
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm font-medium dark:text-white">{tx.description || (tx.type === 'deposit' ? 'Deposit' : 'Withdrawal')}</p>
+                                                    <p className="text-xs text-gray-400">{dateFns.formatDistanceToNow(new Date(tx.date), { addSuffix: true })}</p>
+                                                </div>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className={`text-sm font-semibold ${tx.type === 'deposit' ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
+                                                    {tx.type === 'deposit' ? '+' : '-'}${tx.amount.toFixed(2)}
+                                                </p>
+                                                <span className={`badge ${tx.status === 'completed' ? 'badge-success' : tx.status === 'pending' ? 'badge-warning' : 'badge-danger'}`}>
+                                                    {tx.status}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Spending Categories + Quick Actions */}
+                        <div className="space-y-4">
+                            <div className="glass p-6 rounded-2xl">
+                                <h3 className="font-semibold dark:text-white mb-4">Spending Categories</h3>
+                                <div className="space-y-3">
+                                    {categories.map(cat => (
+                                        <div key={cat.name}>
+                                            <div className="flex justify-between text-sm mb-1">
+                                                <span className="dark:text-gray-300">{cat.name}</span>
+                                                <span className="font-medium dark:text-white">${cat.amount}</span>
+                                            </div>
+                                            <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                                <div
+                                                    className="h-full rounded-full transition-all duration-700"
+                                                    style={{ width: `${(cat.amount / maxCategory) * 100}%`, background: cat.color }}
+                                                ></div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="glass p-6 rounded-2xl">
+                                <h3 className="font-semibold dark:text-white mb-3">Quick Actions</h3>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <button className="p-3 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition text-sm font-medium flex items-center justify-center gap-2">
+                                        <i className="fas fa-paper-plane"></i> Send
+                                    </button>
+                                    <button className="p-3 rounded-xl bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/50 transition text-sm font-medium flex items-center justify-center gap-2">
+                                        <i className="fas fa-qrcode"></i> Receive
+                                    </button>
+                                    <button className="p-3 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/50 transition text-sm font-medium flex items-center justify-center gap-2">
+                                        <i className="fas fa-file-invoice"></i> Bills
+                                    </button>
+                                    <button className="p-3 rounded-xl bg-yellow-50 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-100 dark:hover:bg-yellow-900/50 transition text-sm font-medium flex items-center justify-center gap-2">
+                                        <i className="fas fa-mobile-alt"></i> Load
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Quick Transfer Shortcut */}
+                    <div className="glass p-6 rounded-2xl">
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="font-semibold dark:text-white">Quick Transfer</h3>
+                            <button className="text-sm text-blue-600 dark:text-blue-400 font-medium">View All Contacts</button>
+                        </div>
+                        <div className="flex flex-wrap gap-4">
+                            {[
+                                { name: 'Alice', avatar: 'https://i.pravatar.cc/80?img=1' },
+                                { name: 'Bob', avatar: 'https://i.pravatar.cc/80?img=2' },
+                                { name: 'Carol', avatar: 'https://i.pravatar.cc/80?img=3' },
+                                { name: 'Dave', avatar: 'https://i.pravatar.cc/80?img=4' },
+                            ].map((contact, i) => (
+                                <div key={i} className="flex flex-col items-center gap-1 cursor-pointer hover:scale-105 transition">
+                                    <img src={contact.avatar} alt={contact.name} className="w-14 h-14 rounded-full object-cover ring-2 ring-blue-500/20" />
+                                    <span className="text-xs dark:text-gray-300">{contact.name}</span>
+                                </div>
+                            ))}
+                            <div className="flex flex-col items-center gap-1 cursor-pointer hover:scale-105 transition">
+                                <div className="w-14 h-14 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400 dark:text-gray-500 text-xl">
+                                    <i className="fas fa-plus"></i>
+                                </div>
+                                <span className="text-xs dark:text-gray-300">Add</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // ============================================================
+        // WALLET PAGE
+        // ============================================================
+        function WalletPage() {
+            const { state, updateBalance } = useContext(AppContext);
+            const [depositAmount, setDepositAmount] = useState('');
+            const [withdrawAmount, setWithdrawAmount] = useState('');
+            const [showDepositModal, setShowDepositModal] = useState(false);
+            const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+
+            const handleDeposit = () => {
+                const amt = parseFloat(depositAmount);
+                if (amt > 0) {
+                    updateBalance(amt, 'add');
+                    setDepositAmount('');
+                    setShowDepositModal(false);
+                }
+            };
+
+            const handleWithdraw = () => {
+                const amt = parseFloat(withdrawAmount);
+                if (amt > 0 && amt <= state.walletBalance) {
+                    updateBalance(amt, 'subtract');
+                    setWithdrawAmount('');
+                    setShowWithdrawModal(false);
+                }
+            };
+
+            return (
+                <div className="space-y-6 animate-fade-up">
+                    {/* Balance Card */}
+                    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 to-blue-800 p-8 text-white shadow-xl shadow-blue-500/25">
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+                        <div className="relative z-10">
+                            <p className="text-sm text-blue-200">Available Balance</p>
+                            <p className="text-4xl font-bold mt-1">${state.walletBalance.toFixed(2)}</p>
+                            <p className="text-sm text-blue-200 mt-2">Account # •••• {Math.floor(Math.random() * 10000).toString().padStart(4, '0')}</p>
+                            <div className="flex gap-3 mt-6">
+                                <button
+                                    onClick={() => setShowDepositModal(true)}
+                                    className="px-6 py-2.5 bg-white/20 hover:bg-white/30 rounded-xl backdrop-blur-sm text-sm font-medium transition flex items-center gap-2"
+                                >
+                                    <i className="fas fa-arrow-down"></i> Deposit
+                                </button>
+                                <button
+                                    onClick={() => setShowWithdrawModal(true)}
+                                    className="px-6 py-2.5 bg-white/20 hover:bg-white/30 rounded-xl backdrop-blur-sm text-sm font-medium transition flex items-center gap-2"
+                                >
+                                    <i className="fas fa-arrow-up"></i> Withdraw
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Quick Stats */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="glass p-5 rounded-2xl">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Total Deposits</p>
+                            <p className="text-xl font-bold dark:text-white">
+                                ${state.transactions.filter(t => t.type === 'deposit').reduce((s, t) => s + t.amount, 0).toFixed(2)}
+                            </p>
+                        </div>
+                        <div className="glass p-5 rounded-2xl">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Total Withdrawals</p>
+                            <p className="text-xl font-bold dark:text-white">
+                                ${state.transactions.filter(t => t.type === 'withdrawal').reduce((s, t) => s + t.amount, 0).toFixed(2)}
+                            </p>
+                        </div>
+                        <div className="glass p-5 rounded-2xl">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Transactions</p>
+                            <p className="text-xl font-bold dark:text-white">{state.transactions.length}</p>
+                        </div>
+                    </div>
+
+                    {/* Deposit / Withdraw Modals */}
+                    {showDepositModal && (
+                        <Modal title="Deposit Funds" onClose={() => setShowDepositModal(false)}>
+                            <div className="space-y-4">
+                                <p className="text-sm text-gray-500 dark:text-gray-400">Enter the amount you want to deposit</p>
+                                <input
+                                    type="number"
+                                    value={depositAmount}
+                                    onChange={(e) => setDepositAmount(e.target.value)}
+                                    placeholder="0.00"
+                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white text-2xl font-bold focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                />
+                                <button onClick={handleDeposit} className="btn-primary w-full">Confirm Deposit</button>
+                            </div>
+                        </Modal>
+                    )}
+
+                    {showWithdrawModal && (
+                        <Modal title="Withdraw Funds" onClose={() => setShowWithdrawModal(false)}>
+                            <div className="space-y-4">
+                                <p className="text-sm text-gray-500 dark:text-gray-400">Enter the amount you want to withdraw</p>
+                                <input
+                                    type="number"
+                                    value={withdrawAmount}
+                                    onChange={(e) => setWithdrawAmount(e.target.value)}
+                                    placeholder="0.00"
+                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white text-2xl font-bold focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                />
+                                <p className="text-xs text-gray-400">Available balance: ${state.walletBalance.toFixed(2)}</p>
+                                <button onClick={handleWithdraw} className="btn-primary w-full">Confirm Withdrawal</button>
+                            </div>
+                        </Modal>
+                    )}
+                </div>
+            );
+        }
+
+        // ============================================================
+        // TRANSACTIONS PAGE
+        // ============================================================
+        function TransactionsPage() {
+            const { state } = useContext(AppContext);
+            const [filter, setFilter] = useState('all');
+
+            const filtered = state.transactions.filter(t => {
+                if (filter === 'all') return true;
+                return t.type === filter;
+            });
+
+            return (
+                <div className="space-y-4 animate-fade-up">
+                    <div className="flex flex-wrap gap-3">
+                        {['all', 'deposit', 'withdrawal'].map(f => (
+                            <button
+                                key={f}
+                                onClick={() => setFilter(f)}
+                                className={`px-4 py-2 rounded-xl text-sm font-medium transition ${filter === f ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+                            >
+                                {f === 'all' ? 'All' : f === 'deposit' ? 'Deposits' : 'Withdrawals'}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="glass p-6 rounded-2xl">
+                        {filtered.length === 0 ? (
+                            <p className="text-center text-gray-500 dark:text-gray-400 py-8">No transactions found</p>
+                        ) : (
+                            <div className="overflow-x-auto">
+                                <table className="w-full">
+                                    <thead>
+                                        <tr className="text-left text-sm text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                                            <th className="pb-3 font-medium">Type</th>
+                                            <th className="pb-3 font-medium">Amount</th>
+                                            <th className="pb-3 font-medium">Status</th>
+                                            <th className="pb-3 font-medium">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {filtered.map(tx => (
+                                            <tr key={tx.id} className="border-b border-gray-100 dark:border-gray-800/50 hover:bg-gray-50/50 dark:hover:bg-white/5 transition">
+                                                <td className="py-3">
+                                                    <span className={`text-sm font-medium ${tx.type === 'deposit' ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
+                                                        {tx.type === 'deposit' ? 'Deposit' : 'Withdrawal'}
+                                                    </span>
+                                                </td>
+                                                <td className="py-3 text-sm font-semibold dark:text-white">${tx.amount.toFixed(2)}</td>
+                                                <td className="py-3"><span className={`badge ${tx.status === 'completed' ? 'badge-success' : tx.status === 'pending' ? 'badge-warning' : 'badge-danger'}`}>{tx.status}</span></td>
+                                                <td className="py-3 text-sm text-gray-500 dark:text-gray-400">{dateFns.format(new Date(tx.date), 'MMM d, yyyy')}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        // ============================================================
+        // SEND MONEY PAGE
+        // ============================================================
+        function SendMoneyPage() {
+            const { state, updateBalance, addNotification } = useContext(AppContext);
+            const [recipient, setRecipient] = useState('');
+            const [amount, setAmount] = useState('');
+            const [note, setNote] = useState('');
+            const [isSending, setIsSending] = useState(false);
+
+            const handleSend = () => {
+                const amt = parseFloat(amount);
+                if (!recipient || !amt || amt <= 0 || amt > state.walletBalance) return;
+                setIsSending(true);
+                setTimeout(() => {
+                    updateBalance(amt, 'subtract');
+                    addNotification(`Sent $${amt.toFixed(2)} to ${recipient}`, 'success');
+                    setRecipient('');
+                    setAmount('');
+                    setNote('');
+                    setIsSending(false);
+                }, 800);
+            };
+
+            return (
+                <div className="max-w-md mx-auto space-y-6 animate-fade-up">
+                    <div className="glass p-6 rounded-2xl">
+                        <h3 className="font-semibold dark:text-white mb-4">Send Money</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Recipient</label>
+                                <input
+                                    type="text"
+                                    value={recipient}
+                                    onChange={(e) => setRecipient(e.target.value)}
+                                    placeholder="Email or phone number"
+                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Amount</label>
+                                <input
+                                    type="number"
+                                    value={amount}
+                                    onChange={(e) => setAmount(e.target.value)}
+                                    placeholder="0.00"
+                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white text-2xl font-bold focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Note (optional)</label>
+                                <input
+                                    type="text"
+                                    value={note}
+                                    onChange={(e) => setNote(e.target.value)}
+                                    placeholder="What's this for?"
+                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                />
+                            </div>
+                            <div className="flex items-center justify-between text-sm">
+                                <span className="text-gray-500 dark:text-gray-400">Available: ${state.walletBalance.toFixed(2)}</span>
+                                <button
+                                    onClick={handleSend}
+                                    disabled={isSending || !recipient || !amount || parseFloat(amount) > state.walletBalance}
+                                    className="btn-primary flex items-center gap-2 disabled:opacity-50"
+                                >
+                                    {isSending ? <div className="spinner"></div> : <><i className="fas fa-paper-plane"></i> Send</>}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="text-center text-xs text-gray-400 dark:text-gray-500">
+                        <i className="fas fa-lock mr-1"></i> End-to-end encrypted transaction
+                    </div>
+                </div>
+            );
+        }
+
+        // ============================================================
+        // RECEIVE PAGE (QR)
+        // ============================================================
+        function ReceivePage() {
+            const { state } = useContext(AppContext);
+            const [amount, setAmount] = useState('');
+
+            // Generate a mock QR code using a simple pattern
+            const qrData = `novapay://receive?user=${state.userProfile.email}&amount=${amount || '0'}`;
+
+            return (
+                <div className="max-w-md mx-auto space-y-6 animate-fade-up">
+                    <div className="glass p-8 rounded-2xl text-center">
+                        <h3 className="font-semibold dark:text-white mb-2">Receive Money</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Scan this QR code to receive payment</p>
+
+                        <div className="qr-container inline-block mx-auto p-4 rounded-2xl shadow-lg">
+                            <div className="w-48 h-48 bg-white rounded-xl flex items-center justify-center relative">
+                                {/* Mock QR code */}
+                                <div className="grid grid-cols-6 gap-1 w-36 h-36">
+                                    {[...Array(36)].map((_, i) => {
+                                        const isBlack = Math.random() > 0.5;
+                                        return (
+                                            <div
+                                                key={i}
+                                                className={`rounded-sm ${isBlack ? 'bg-gray-900' : 'bg-white'}`}
+                                                style={{ width: '100%', height: '100%' }}
+                                            ></div>
+                                        );
+                                    })}
+                                </div>
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                                        <i className="fas fa-wallet text-white text-xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-4">
+                            <p className="text-sm font-medium dark:text-white">{state.userProfile.email}</p>
+                            <p className="text-xs text-gray-400">Your NovaPay ID</p>
+                        </div>
+
+                        <div className="mt-6 flex gap-3 justify-center">
+                            <button className="px-6 py-2.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl text-sm font-medium hover:bg-blue-100 dark:hover:bg-blue-900/50 transition flex items-center gap-2">
+                                <i className="fas fa-copy"></i> Copy
+                            </button>
+                            <button className="px-6 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-xl text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition flex items-center gap-2">
+                                <i className="fas fa-share-alt"></i> Share
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="glass p-6 rounded-2xl">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Request Specific Amount</label>
+                        <div className="flex gap-3">
+                            <input
+                                type="number"
+                                value={amount}
+                                onChange={(e) => setAmount(e.target.value)}
+                                placeholder="0.00"
+                                className="flex-1 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+                            />
+                            <button className="btn-primary">Request</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // ============================================================
+        // BILLS PAGE
+        // ============================================================
+        function BillsPage() {
+            const { state, addNotification } = useContext(AppContext);
+            const [selectedBill, setSelectedBill] = useState(null);
+
+            const bills = [
+                { id: 1, name: 'Electricity', icon: 'fa-bolt', color: '#f59e0b', amount: 145.50, due: '2026-08-05' },
+                { id: 2, name: 'Internet', icon: 'fa-wifi', color: '#3b82f6', amount: 89.99, due: '2026-08-10' },
+                { id: 3, name: 'Water', icon: 'fa-tint', color: '#06b6d4', amount: 52.30, due: '2026-08-15' },
+                { id: 4, name: 'Gas', icon: 'fa-fire', color: '#ef4444', amount: 78.20, due: '2026-08-12' },
+                { id: 5, name: 'Phone', icon: 'fa-phone', color: '#8b5cf6', amount: 65.00, due: '2026-08-08' },
+            ];
+
+            const handlePayBill = (bill) => {
+                if (bill.amount > state.walletBalance) {
+                    addNotification('Insufficient balance to pay this bill.', 'error');
+                    return;
+                }
+                // Subtract from balance
+                const newBalance = state.walletBalance - bill.amount;
+                // In real app, would dispatch
+                addNotification(`Paid $${bill.amount.toFixed(2)} for ${bill.name}`, 'success');
+                setSelectedBill(null);
+            };
+
+            return (
+                <div className="space-y-4 animate-fade-up">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {bills.map(bill => (
+                            <div key={bill.id} className="glass p-5 rounded-2xl hover:shadow-lg transition cursor-pointer" onClick={() => setSelectedBill(bill)}>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style={{ background: `${bill.color}20`, color: bill.color }}>
+                                        <i className={`fas ${bill.icon}`}></i>
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="font-medium dark:text-white">{bill.name}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Due {dateFns.format(new Date(bill.due), 'MMM d')}</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="font-bold dark:text-white">${bill.amount.toFixed(2)}</p>
+                                        <button className="text-xs text-blue-600 dark:text-blue-400 font-medium">Pay</button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Bill Payment Modal */}
+                    {selectedBill && (
+                        <Modal title={`Pay ${selectedBill.name}`} onClose={() => setSelectedBill(null)}>
+                            <div className="space-y-4">
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-gray-500 dark:text-gray-400">Amount</span>
+                                    <span className="font-bold dark:text-white">${selectedBill.amount.toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-gray-500 dark:text-gray-400">Due Date</span>
+                                    <span className="dark:text-white">{selectedBill.due}</span>
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                    <span className="text-gray-500 dark:text-gray-400">Available Balance</span>
+                                    <span className="font-medium dark:text-white">${state.walletBalance.toFixed(2)}</span>
+                                </div>
+                                <button
+                                    onClick={() => handlePayBill(selectedBill)}
+                                    className="btn-primary w-full"
+                                    disabled={selectedBill.amount > state.walletBalance}
+                                >
+                                    {selectedBill.amount > state.walletBalance ? 'Insufficient Balance' : 'Pay Now'}
+                                </button>
+                            </div>
+                        </Modal>
+                    )}
+                </div>
+            );
+        }
+
+        // ============================================================
+        // CARDS PAGE
+        // ============================================================
+        function CardsPage() {
+            const { state } = useContext(AppContext);
+            const [showAddCard, setShowAddCard] = useState(false);
+
+            return (
+                <div className="space-y-6 animate-fade-up">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {state.cards.map(card => (
+                            <div key={card.id} className="relative overflow-hidden rounded-2xl p-6 text-white" style={{
+                                    background: card.brand === 'visa' ?
+                                        'linear-gradient(145deg, #1a1a2e, #16213e)' :
+                                        'linear-gradient(145deg, #1a1a2e, #2d1b69)'
+                                }}>
+                                <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                                <div className="relative z-10">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <p className="text-xs text-white/60">Card</p>
+                                            <p className="font-bold text-lg">{card.type}</p>
+                                        </div>
+                                        <i className={`fab fa-${card.brand} text-3xl text-white/80`}></i>
+                                    </div>
+                                    <div className="mt-6">
+                                        <p className="text-sm tracking-wider">•••• •••• •••• {card.last4}</p>
+                                        <div className="flex justify-between mt-2 text-xs text-white/60">
+                                            <span>Expires {card.expiry}</span>
+                                            <span>NovaPay</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                        <div
+                            className="glass p-6 rounded-2xl flex flex-col items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-700 cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition"
+                            onClick={() => setShowAddCard(true)}
+                        >
+                            <i className="fas fa-plus-circle text-4xl text-gray-400 dark:text-gray-500 mb-2"></i>
+                            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Add New Card</p>
+                        </div>
+                    </div>
+
+                    {showAddCard && (
+                        <Modal title="Add New Card" onClose={() => setShowAddCard(false)}>
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Card Number</label>
+                                    <input type="text" placeholder="1234 5678 9012 3456" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition" />
+                                </div>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Expiry</label>
+                                        <input type="text" placeholder="MM/YY" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">CVV</label>
+                                        <input type="text" placeholder="123" className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition" />
+                                    </div>
+                                </div>
+                                <button className="btn-primary w-full">Add Card</button>
+                            </div>
+                        </Modal>
+                    )}
+                </div>
+            );
+        }
+
+        // ============================================================
+        // PROFILE PAGE
+        // ============================================================
+        function ProfilePage() {
+            const { state, dispatch } = useContext(AppContext);
+            const [isEditing, setIsEditing] = useState(false);
+            const [formData, setFormData] = useState({
+                name: state.userProfile.name,
+                email: state.userProfile.email,
+                phone: state.userProfile.phone,
+            });
+
+            const handleSave = () => {
+                dispatch({ type: 'UPDATE_PROFILE', payload: formData });
+                setIsEditing(false);
+            };
+
+            return (
+                <div className="max-w-2xl mx-auto space-y-6 animate-fade-up">
+                    <div className="glass p-8 rounded-2xl text-center">
+                        <div className="relative inline-block">
+                            <img src={state.userProfile.avatar} alt="Profile" className="w-24 h-24 rounded-full object-cover ring-4 ring-blue-500/20" />
+                            <button className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm shadow-lg">
+                                <i className="fas fa-camera"></i>
+                            </button>
+                        </div>
+                        <h2 className="text-xl font-bold dark:text-white mt-3">{state.userProfile.name}</h2>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">{state.userProfile.email}</p>
+                        <div className="flex justify-center gap-2 mt-2">
+                            <span className={`badge ${state.userProfile.kycStatus === 'verified' ? 'badge-success' : 'badge-warning'}`}>
+                                {state.userProfile.kycStatus === 'verified' ? '✓ KYC Verified' : 'KYC Pending'}
+                            </span>
+                            <span className="badge badge-info">Member since {dateFns.format(new Date(state.userProfile.joined), 'MMM yyyy')}</span>
+                        </div>
+                    </div>
+
+                    <div className="glass p-6 rounded-2xl">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="font-semibold dark:text-white">Personal Information</h3>
+                            <button
+                                onClick={() => setIsEditing(!isEditing)}
+                                className="text-sm text-blue-600 dark:text-blue-400 font-medium"
+                            >
+                                {isEditing ? 'Cancel' : 'Edit'}
+                            </button>
+                        </div>
+                        {isEditing ? (
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                                    <input
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                                    <input
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone</label>
+                                    <input
+                                        value={formData.phone}
+                                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-white/5 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                    />
+                                </div>
+                                <button onClick={handleSave} className="btn-primary w-full">Save Changes</button>
+                            </div>
+                        ) : (
+                            <div className="space-y-3">
+                                <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-800">
+                                    <span className="text-gray-500 dark:text-gray-400">Full Name</span>
+                                    <span className="font-medium dark:text-white">{state.userProfile.name}</span>
+                                </div>
+                                <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-800">
+                                    <span className="text-gray-500 dark:text-gray-400">Email</span>
+                                    <span className="font-medium dark:text-white">{state.userProfile.email}</span>
+                                </div>
+                                <div className="flex justify-between py-2 border-b border-gray-100 dark:border-gray-800">
+                                    <span className="text-gray-500 dark:text-gray-400">Phone</span>
+                                    <span className="font-medium dark:text-white">{state.userProfile.phone}</span>
+                                </div>
+                                <div className="flex justify-between py-2">
+                                    <span className="text-gray-500 dark:text-gray-400">KYC Status</span>
+                                    <span className={`font-medium ${state.userProfile.kycStatus === 'verified' ? 'text-green-600 dark:text-green-400' : 'text-yellow-600 dark:text-yellow-400'}`}>
+                                        {state.userProfile.kycStatus === 'verified' ? 'Verified' : 'Pending Verification'}
+                                    </span>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Bank Accounts */}
+                    <div className="glass p-6 rounded-2xl">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="font-semibold dark:text-white">Linked Bank Accounts</h3>
+                            <button className="text-sm text-blue-600 dark:text-blue-400 font-medium">+ Add</button>
+                        </div>
+                        {state.bankAccounts.map(acc => (
+                            <div key={acc.id} className="flex items-center justify-between p-3 rounded-xl bg-gray-50/50 dark:bg-white/5">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                                        <i className="fas fa-university"></i>
+                                    </div>
+                                    <div>
+                                        <p className="font-medium dark:text-white">{acc.bank}</p>
+                                        <p className="text-xs text-gray-400">Account {acc.accountNumber}</p>
+                                    </div>
+                                </div>
+                                <span className="badge badge-success">Verified</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        // ============================================================
+        // SETTINGS PAGE
+        // ============================================================
+        function SettingsPage() {
+            const { state, dispatch } = useContext(AppContext);
+            const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+            const [biometricsEnabled, setBiometricsEnabled] = useState(false);
+
+            return (
+                <div className="max-w-2xl mx-auto space-y-4 animate-fade-up">
+                    <div className="glass p-6 rounded-2xl">
+                        <h3 className="font-semibold dark:text-white mb-4">Preferences</h3>
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-800">
+                                <div>
+                                    <p className="font-medium dark:text-white">Dark Mode</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">Switch between light and dark themes</p>
+                                </div>
+                                <div
+                                    className={`toggle ${state.darkMode ? 'active' : ''}`}
+                                    onClick={() => dispatch({ type: 'TOGGLE_DARK_MODE' })}
+                                >
+                                    <div className="thumb"></div>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-800">
+                                <div>
+                                    <p className="font-medium dark:text-white">Push Notifications</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">Receive alerts for transactions</p>
+                                </div>
+                                <div
+                                    className={`toggle ${notificationsEnabled ? 'active' : ''}`}
+                                    onClick={() => setNotificationsEnabled(!notificationsEnabled)}
+                                >
+                                    <div className="thumb"></div>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between py-2">
+                                <div>
+                                    <p className="font-medium dark:text-white">Biometrics</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">Use fingerprint or face ID to login</p>
+                                </div>
+                                <div
+                                    className={`toggle ${biometricsEnabled ? 'active' : ''}`}
+                                    onClick={() => setBiometricsEnabled(!biometricsEnabled)}
+                                >
+                                    <div className="thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="glass p-6 rounded-2xl">
+                        <h3 className="font-semibold dark:text-white mb-4">Security</h3>
+                        <div className="space-y-3">
+                            <button className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-gray-50/50 dark:hover:bg-white/5 transition">
+                                <span className="dark:text-white">Change Password</span>
+                                <i className="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                            <button className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-gray-50/50 dark:hover:bg-white/5 transition">
+                                <span className="dark:text-white">Two-Factor Authentication</span>
+                                <span className="badge badge-success">Enabled</span>
+                            </button>
+                            <button className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-gray-50/50 dark:hover:bg-white/5 transition">
+                                <span className="dark:text-white">Session Management</span>
+                                <i className="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                            <button className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-red-50/50 dark:hover:bg-red-900/20 transition text-red-500">
+                                <span>Delete Account</span>
+                                <i className="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // ============================================================
+        // ADMIN PAGE
+        // ============================================================
+        function AdminPage() {
+            const { state } = useContext(AppContext);
+            const [adminTab, setAdminTab] = useState('overview');
+
+            const stats = {
+                totalUsers: state.users.length,
+                pendingKYC: state.kycRequests.filter(k => k.status === 'pending').length,
+                pendingDeposits: state.pendingDeposits.filter(d => d.status === 'pending').length,
+                pendingWithdrawals: state.pendingWithdrawals.filter(w => w.status === 'pending').length,
+                totalRevenue: state.transactions.filter(t => t.type === 'deposit').reduce((s, t) => s + t.amount, 0),
+                totalFees: state.transactions.reduce((s, t) => s + (t.amount * 0.005), 0),
+            };
+
+            return (
+                <div className="space-y-6 animate-fade-up">
+                    {/* Admin Tabs */}
+                    <div className="flex flex-wrap gap-2">
+                        {['overview', 'users', 'kyc', 'deposits', 'withdrawals', 'logs', 'support'].map(tab => (
+                            <button
+                                key={tab}
+                                onClick={() => setAdminTab(tab)}
+                                className={`px-4 py-2 rounded-xl text-sm font-medium transition capitalize ${adminTab === tab ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+                            >
+                                {tab}
+                            </button>
+                        ))}
+                    </div>
+
+                    {adminTab === 'overview' && (
+                        <>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div className="glass p-4 rounded-2xl">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">Total Users</p>
+                                    <p className="text-2xl font-bold dark:text-white">{stats.totalUsers}</p>
+                                </div>
+                                <div className="glass p-4 rounded-2xl">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">Pending KYC</p>
+                                    <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{stats.pendingKYC}</p>
+                                </div>
+                                <div className="glass p-4 rounded-2xl">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">Pending Deposits</p>
+                                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.pendingDeposits}</p>
+                                </div>
+                                <div className="glass p-4 rounded-2xl">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">Total Revenue</p>
+                                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">${stats.totalRevenue.toFixed(2)}</p>
+                                </div>
+                            </div>
+
+                            {/* Fraud Detection Dashboard */}
+                            <div className="glass p-6 rounded-2xl">
+                                <h3 className="font-semibold dark:text-white mb-4">Fraud Detection Dashboard</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div className="p-4 rounded-xl bg-red-50/50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30">
+                                        <p className="text-sm text-red-600 dark:text-red-400">Suspicious Activities</p>
+                                        <p className="text-2xl font-bold text-red-600 dark:text-red-400">0</p>
+                                        <p className="text-xs text-gray-400">Last 24 hours</p>
+                                    </div>
+                                    <div className="p-4 rounded-xl bg-yellow-50/50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/30">
+                                        <p className="text-sm text-yellow-600 dark:text-yellow-400">Flagged Transactions</p>
+                                        <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">2</p>
+                                        <p className="text-xs text-gray-400">Requires review</p>
+                                    </div>
+                                    <div className="p-4 rounded-xl bg-green-50/50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/30">
+                                        <p className="text-sm text-green-600 dark:text-green-400">Risk Score</p>
+                                        <p className="text-2xl font-bold text-green-600 dark:text-green-400">Low</p>
+                                        <p className="text-xs text-gray-400">Overall system status</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* System Logs Preview */}
+                            <div className="glass p-6 rounded-2xl">
+                                <h3 className="font-semibold dark:text-white mb-4">Recent System Logs</h3>
+                                <div className="space-y-2">
+                                    {state.systemLogs.slice(0, 4).map(log => (
+                                        <div key={log.id} className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50/50 dark:hover:bg-white/5 transition text-sm">
+                                            <div>
+                                                <span className="font-medium dark:text-white">{log.action}</span>
+                                                <span className="text-gray-400 ml-2">• {log.user}</span>
+                                            </div>
+                                            <span className="text-xs text-gray-400">{log.timestamp}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </>
+                    )}
+
+                    {adminTab === 'users' && (
+                        <div className="glass p-6 rounded-2xl overflow-x-auto">
+                            <table className="w-full">
+                                <thead>
+                                    <tr className="text-left text-sm text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                                        <th className="pb-3 font-medium">Name</th>
+                                        <th className="pb-3 font-medium">Email</th>
+                                        <th className="pb-3 font-medium">Role</th>
+                                        <th className="pb-3 font-medium">KYC</th>
+                                        <th className="pb-3 font-medium">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {state.users.map(u => (
+                                        <tr key={u.id} className="border-b border-gray-100 dark:border-gray-800/50">
+                                            <td className="py-3 font-medium dark:text-white">{u.name}</td>
+                                            <td className="py-3 text-sm text-gray-500 dark:text-gray-400">{u.email}</td>
+                                            <td className="py-3"><span className="badge badge-info">{u.role}</span></td>
+                                            <td className="py-3"><span className={`badge ${u.kyc === 'verified' ? 'badge-success' : 'badge-warning'}`}>{u.kyc}</span></td>
+                                            <td className="py-3"><span className={`badge ${u.status === 'active' ? 'badge-success' : 'badge-danger'}`}>{u.status}</span></td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+
+                    {adminTab === 'kyc' && (
+                        <div className="glass p-6 rounded-2xl">
+                            <h3 className="font-semibold dark:text-white mb-4">KYC Verification Requests</h3>
+                            {state.kycRequests.map(req => (
+                                <div key={req.id} className="flex items-center justify-between p-4 rounded-xl border border-gray-100 dark:border-gray-800 mb-2">
+                                    <div>
+                                        <p className="font-medium dark:text-white">{req.name}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">{req.email}</p>
+                                        <p className="text-xs text-gray-400">Submitted {dateFns.format(new Date(req.submitted), 'MMM d, yyyy')}</p>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button className="px-4 py-1.5 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition">Approve</button>
+                                        <button className="px-4 py-1.5 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition">Reject</button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {adminTab === 'deposits' && (
+                        <div className="glass p-6 rounded-2xl overflow-x-auto">
+                            <h3 className="font-semibold dark:text-white mb-4">Pending Deposits</h3>
+                            <table className="w-full">
+                                <thead>
+                                    <tr className="text-left text-sm text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                                        <th className="pb-3 font-medium">Amount</th>
+                                        <th className="pb-3 font-medium">Method</th>
+                                        <th className="pb-3 font-medium">Date</th>
+                                        <th className="pb-3 font-medium">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {state.pendingDeposits.filter(d => d.status === 'pending').map(d => (
+                                        <tr key={d.id} className="border-b border-gray-100 dark:border-gray-800/50">
+                                            <td className="py-3 font-bold dark:text-white">${d.amount.toFixed(2)}</td>
+                                            <td className="py-3 text-sm text-gray-500 dark:text-gray-400">{d.method}</td>
+                                            <td className="py-3 text-sm text-gray-500 dark:text-gray-400">{d.date}</td>
+                                            <td className="py-3 flex gap-2">
+                                                <button className="px-3 py-1 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition">Approve</button>
+                                                <button className="px-3 py-1 bg-red-500 text-white rounded-lg text-xs font-medium hover:bg-red-600 transition">Reject</button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+
+                    {adminTab === 'withdrawals' && (
+                        <div className="glass p-6 rounded-2xl overflow-x-auto">
+                            <h3 className="font-semibold dark:text-white mb-4">Pending Withdrawals</h3>
+                            <table className="w-full">
+                                <thead>
+                                    <tr className="text-left text-sm text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                                        <th className="pb-3 font-medium">Amount</th>
+                                        <th className="pb-3 font-medium">Method</th>
+                                        <th className="pb-3 font-medium">Date</th>
+                                        <th className="pb-3 font-medium">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {state.pendingWithdrawals.filter(w => w.status === 'pending').map(w => (
+                                        <tr key={w.id} className="border-b border-gray-100 dark:border-gray-800/50">
+                                            <td className="py-3 font-bold dark:text-white">${w.amount.toFixed(2)}</td>
+                                            <td className="py-3 text-sm text-gray-500 dark:text-gray-400">{w.method}</td>
+                                            <td className="py-3 text-sm text-gray-500 dark:text-gray-400">{w.date}</td>
+                                            <td className="py-3 flex gap-2">
+                                                <button className="px-3 py-1 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 transition">Approve</button>
+                                                <button className="px-3 py-1 bg-red-500 text-white rounded-lg text-xs font-medium hover:bg-red-600 transition">Reject</button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+
+                    {adminTab === 'logs' && (
+                        <div className="glass p-6 rounded-2xl overflow-x-auto">
+                            <h3 className="font-semibold dark:text-white mb-4">System Audit Logs</h3>
+                            <table className="w-full">
+                                <thead>
+                                    <tr className="text-left text-sm text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                                        <th className="pb-3 font-medium">Action</th>
+                                        <th className="pb-3 font-medium">User</th>
+                                        <th className="pb-3 font-medium">Timestamp</th>
+                                        <th className="pb-3 font-medium">IP</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {state.systemLogs.map(log => (
+                                        <tr key={log.id} className="border-b border-gray-100 dark:border-gray-800/50">
+                                            <td className="py-3 font-medium dark:text-white">{log.action}</td>
+                                            <td className="py-3 text-sm text-gray-500 dark:text-gray-400">{log.user}</td>
+                                            <td className="py-3 text-sm text-gray-500 dark:text-gray-400">{log.timestamp}</td>
+                                            <td className="py-3 text-sm text-gray-500 dark:text-gray-400">{log.ip}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+
+                    {adminTab === 'support' && (
+                        <div className="glass p-6 rounded-2xl">
+                            <h3 className="font-semibold dark:text-white mb-4">Customer Support Tickets</h3>
+                            {state.supportTickets.map(ticket => (
+                                <div key={ticket.id} className="flex items-center justify-between p-4 rounded-xl border border-gray-100 dark:border-gray-800 mb-2">
+                                    <div>
+                                        <p className="font-medium dark:text-white">{ticket.subject}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">{ticket.user}</p>
+                                        <p className="text-xs text-gray-400">Created {dateFns.format(new Date(ticket.created), 'MMM d, yyyy')}</p>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <span className={`badge ${ticket.status === 'open' ? 'badge-warning' : ticket.status === 'in-progress' ? 'badge-info' : 'badge-success'}`}>
+                                            {ticket.status}
+                                        </span>
+                                        <button className="text-blue-600 dark:text-blue-400 text-sm font-medium">Respond</button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // ============================================================
+        // MODAL COMPONENT
+        // ============================================================
+        function Modal({ title, children, onClose }) {
+            return (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay" style={{ background: 'rgba(0,0,0,0.5)' }}>
+                    <div className="modal-content glass max-w-md w-full p-6 rounded-3xl animate-fade-up">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-xl font-bold dark:text-white">{title}</h3>
+                            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-white text-xl">
+                                <i className="fas fa-times"></i>
+                            </button>
+                        </div>
+                        {children}
+                    </div>
+                </div>
+            );
+        }
+
+        // ============================================================
+        // RENDER
+        // ============================================================
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
